@@ -1,0 +1,20 @@
+# 依賴套件 (體積過大，伺服器上會自己 npm install)
+node_modules/
+*/node_modules/
+
+# 🔒 最高資安機密：環境變數與連線密鑰 (絕對不能公開推上 GitHub！)
+.env
+.env.local
+.env.production
+*/.env
+
+# 打包編譯產物
+dist/
+build/
+*/dist/
+
+# 系統暫存檔案
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
