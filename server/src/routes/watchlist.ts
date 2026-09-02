@@ -111,7 +111,8 @@ watchlistRouter.put(
   async (req: AuthenticatedRequest, res: Response, next) => {
     try {
       const userId = req.user!.userId;
-      const symbol = req.params.symbol.toUpperCase();
+      const rawSymbol = Array.isArray(req.params.symbol) ? req.params.symbol[0] : req.params.symbol;
+      const symbol = String(rawSymbol).toUpperCase();
       const { notes, targetAlertHigh, targetAlertLow } = req.body;
 
       // 🔒 資安防護：限定 userId 與 symbol 雙重條件，防止越權修改他人資料 (IDOR)
@@ -152,7 +153,8 @@ watchlistRouter.put(
 watchlistRouter.delete('/:symbol', async (req: AuthenticatedRequest, res: Response, next) => {
   try {
     const userId = req.user!.userId;
-    const symbol = req.params.symbol.toUpperCase();
+    const rawSymbol = Array.isArray(req.params.symbol) ? req.params.symbol[0] : req.params.symbol;
+    const symbol = String(rawSymbol).toUpperCase();
 
     const deleted = await prisma.watchlistItem.deleteMany({
       where: {
