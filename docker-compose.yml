@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  # ⚙️ 1. 後端 Node.js API 容器
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: cryptoradar-server
+    restart: unless-stopped
+    env_file:
+      - ./server/.env
+    expose:
+      - "5001"
+    networks:
+      - cryptoradar-net
+
+  # 🌐 2. 前端 Nginx 容器 (對外門牌 Port 80)
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: cryptoradar-client
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    networks:
+      - cryptoradar-net
+
+networks:
+  cryptoradar-net:
+    driver: bridge

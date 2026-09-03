@@ -1,6 +1,6 @@
-const API_BASE_URL = 'http://localhost:5001/api';
+// 使用相對路徑 '/api'，無論本地還是 AWS 線上伺服器 (透過 Nginx 反向代理) 都能無縫連通！
+const API_BASE_URL = '/api';
 
-// 取得儲存在瀏覽器的 JWT Token
 function getAuthHeaders() {
   const token = localStorage.getItem('cryptoradar_auth_token_v1');
   return {
@@ -58,7 +58,7 @@ export const api = {
     }
   },
 
-  // 4. 取得即時加密快訊 (從後端獲取)
+  // 4. 取得即時加密快訊
   async getNews() {
     try {
       const res = await fetch(`${API_BASE_URL}/news`);

@@ -24,8 +24,8 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModalProps) {
 
     try {
       const endpoint = isRegister
-        ? 'http://localhost:5001/api/auth/register'
-        : 'http://localhost:5001/api/auth/login';
+        ? '/api/auth/register'
+        : '/api/auth/login';
 
       const payload = isRegister ? { email, password, username } : { email, password };
 
