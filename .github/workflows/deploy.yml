@@ -7,14 +7,14 @@ on:
 jobs:
   # ─── 階段 1：CI 持續整合 (靜態檢查與編譯測試) ───
   build-and-test:
-    name: 🧪 CI: Build & Test
+    name: "🧪 CI: Build & Test"
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 檢出程式碼 (Checkout)
+      - name: "📥 檢出程式碼 (Checkout)"
         uses: actions/checkout@v4
 
-      - name: ⚙️ 設定 Node.js 20 環境
+      - name: "⚙️ 設定 Node.js 20 環境"
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -23,26 +23,26 @@ jobs:
             server/package-lock.json
             client/package-lock.json
 
-      - name: 📦 後端編譯測試
+      - name: "📦 後端編譯測試"
         run: |
           npm --prefix server install
           npm --prefix server run db:generate
           npm --prefix server run build
 
-      - name: 📦 前端編譯測試
+      - name: "📦 前端編譯測試"
         run: |
           npm --prefix client install
           npm --prefix client run build
 
   # ─── 階段 2：CD 持續部署 (自動部署至 AWS EC2) ───
   deploy-to-ec2:
-    name: 🚀 CD: Deploy to AWS EC2
+    name: "🚀 CD: Deploy to AWS EC2"
     needs: build-and-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: 🔑 透過 SSH 登入 EC2 並重構 Docker 容器
+      - name: "🔑 透過 SSH 登入 EC2 並重構 Docker 容器"
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
