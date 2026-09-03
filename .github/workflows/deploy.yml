@@ -49,7 +49,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 🛡️ 嚴格模式：只要任何一行失敗，立刻中斷並回報紅燈失敗！
             set -e
 
             echo "🚀 走進專案目錄..."
@@ -59,10 +58,11 @@ jobs:
             git reset --hard HEAD
             git pull origin main
 
-            echo "🐳 重新建置並無縫啟動 Docker 容器..."
-            docker compose up -d --build
+            echo "🐳 清理孤兒容器並強制全新建置..."
+            docker compose down --remove-orphans || true
+            docker compose up -d --build --force-recreate
 
-            echo "🧹 清理舊映像檔..."
+            echo "🧹 清理舊映像檔快取..."
             docker image prune -f
 
             echo "✅ CryptoRadar 自動化部署圓滿成功！"
